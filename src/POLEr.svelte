@@ -1,5 +1,6 @@
 <script>
     import Explorer from "./Explorer.svelte"
+    export let version
     export let nodes = [
         {
             properties: {
@@ -14,8 +15,9 @@
     ]
 </script>
 <section class="row border-bottom">
-    <div class="col-sm-12 pt-2">
+    <div class="col-sm-12 pt-2 d-flex align-items-end">
         <img src="/ROLEr.svg" alt="POLEr" height="64px" />
+        <small class="text-muted">v{version}</small>
     </div>
 </section>
 <section class="row pt-2">

@@ -1,31 +1,24 @@
 <script>
     import { onMount } from 'svelte'
-    import { DataSet, Network } from "vis-network/standalone"
+    import { Network, DataSet } from "vis-network/standalone"
 
-    const nodes = new DataSet([
-        {id: 1, label: 'Node 1'},
-        {id: 2, label: 'Node 2'},
-        {id: 3, label: 'Node 3'},
-        {id: 4, label: 'Node 4'},
-        {id: 5, label: 'Node 5'}
-    ])
-
-    const edges = new DataSet([
-        {from: 1, to: 3},
-        {from: 1, to: 2},
-        {from: 2, to: 4},
-        {from: 2, to: 5},
-        {from: 3, to: 3}
-    ])
-
-    const options = {
-        height: `${window.innerHeight - 97}px`,
-        width: '100%'
+    const getData = async () => {
+        const {nodes, edges} = await fetch('/all').then(res => res.json()).catch(console.error)
+        return {nodes: new DataSet(nodes), edges: new DataSet(edges)}
     }
 
-    onMount(() => {
+    onMount(async () => {
         const DOM = document.getElementById('explorer')
-        const network = new Network(DOM, {nodes, edges}, options)
+        const options = {
+            height: `${window.innerHeight - 97}px`,
+            width: '100%'
+        }
+        try {
+            const data = await getData()
+            const network = new Network(DOM, data, options)
+        } catch(err) {
+            console.error(err)
+        }
     })
 </script>
-<section id="explorer" class="bg-dark mt-1"></section>
+<section id="explorer" class="mt-1"></section>
