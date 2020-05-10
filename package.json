@@ -13,7 +13,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "neo4j-driver": "^4.0.2",
-    "pug": "^2.0.4",
     "ramda": "^0.27.0",
     "vis-network": "^7.6.4"
   },

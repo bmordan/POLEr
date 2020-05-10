@@ -1,8 +1,12 @@
 {
   "version": 3,
   "file": "bundle.css",
-  "sources": [],
-  "sourcesContent": [],
+  "sources": [
+    "../Explorer.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n    import { onMount } from 'svelte'\n    import { Network, DataSet } from \"vis-network/standalone\"\n    import options, {transformForNetwork, createNodeLookup} from './vis-factory.js'\n\n    export let onSelect\n\n    let nodeLookup = {}\n    let networkNodes = null\n    let networkEdges = null\n    $: network = undefined\n    $: updating = false\n\n    const onClick = ({nodes}) => {\n        if (!nodes.length) return\n        const [id] = nodes\n        onSelect(nodeLookup[id] ? nodeLookup[id] : null)\n    }\n\n    const onDoubleClick = async event => {\n        if (!event.nodes.length) return\n        updating = true\n        const [id] = event.nodes\n        const data = await fetch(`/expand/${id}`).then(res => res.json()).catch(console.error)\n        const {nodes, edges} = transformForNetwork(data)\n        nodes.forEach(_node => {\n            const [node] = network.findNode(_node.id)\n            if (!node) networkNodes.add(node)\n        })\n        updating = false\n    } \n\n    onMount(async () => {\n        const DOM = document.getElementById('explorer')\n        try {\n            const data = await fetch(`/person?name=${encodeURIComponent(\"Bernard Mordan\")}`).then(res => res.json()).catch(console.error)\n            const {nodes, edges} = transformForNetwork(data)\n            nodeLookup = createNodeLookup(nodes)\n            networkNodes = new DataSet(nodes)\n            networkEdges = new DataSet(edges)\n            network = new Network(DOM, {nodes: networkNodes, edges: networkEdges}, options)\n            network.on('click', onClick)\n            network.on('doubleClick', onDoubleClick)\n        } catch(err) {\n            console.error(err)\n        }\n    })\n\n</script>\n<section id=\"explorer\" class=\"mt-1\">\n    <div class=\"w-100 d-flex align-items-center justify-content-center\" style=\"height:90vh;\">\n        <img src=\"/icons/timer.svg\" alt=\"loading network\" class=\"loading\" />\n    </div>\n</section>\n<style>\n.loading {\n    animation: spin 3s cubic-bezier(0.075, 0.82, 0.165, 1);\n    animation-iteration-count: infinite;\n}\n@-moz-keyframes spin { 80% { -moz-transform: rotate(360deg); } }\n@-webkit-keyframes spin { 80% { -webkit-transform: rotate(360deg); } }\n@keyframes spin { 80% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }\n</style>"
+  ],
   "names": [],
-  "mappings": ""
+  "mappings": "AAuDA,QAAQ,cAAC,CAAC,AACN,SAAS,CAAE,kBAAI,CAAC,EAAE,CAAC,aAAa,KAAK,CAAC,CAAC,IAAI,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CACtD,yBAAyB,CAAE,QAAQ,AACvC,CAAC,AACD,gBAAgB,kBAAK,CAAC,AAAC,GAAG,AAAC,CAAC,AAAC,cAAc,CAAE,OAAO,MAAM,CAAC,AAAE,CAAC,AAAC,CAAC,AAChE,mBAAmB,kBAAK,CAAC,AAAC,GAAG,AAAC,CAAC,AAAC,iBAAiB,CAAE,OAAO,MAAM,CAAC,AAAE,CAAC,AAAC,CAAC,AACtE,WAAW,kBAAK,CAAC,AAAC,GAAG,AAAC,CAAC,AAAC,iBAAiB,CAAE,OAAO,MAAM,CAAC,CAAE,UAAU,OAAO,MAAM,CAAC,AAAE,CAAC,AAAC,CAAC"
 }
