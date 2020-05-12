@@ -33,7 +33,7 @@
     onMount(async () => {
         const DOM = document.getElementById('explorer')
         try {
-            const data = await fetch(`/person?name=${encodeURIComponent("Bernard Mordan")}`).then(res => res.json()).catch(console.error)
+            const data = await fetch(`/person?name=${encodeURIComponent("Jen")}`).then(res => res.json()).catch(console.error)
             const {nodes, edges} = transformForNetwork(data)
             nodeLookup = createNodeLookup(nodes)
             networkNodes = new DataSet(nodes)
