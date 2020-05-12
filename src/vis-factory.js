@@ -50,6 +50,13 @@ const nodes = {
         right: 2,
         bottom: 2,
         left: 2
+    },
+    shadow:{
+        enabled: true,
+        color: 'rgba(0,0,0,0.2)',
+        size:9,
+        x:5,
+        y:5
     }
 }
 const iconImages = type => {
@@ -64,12 +71,15 @@ const addLabels = {
             PERSON: 'name',
             OBJECT: 'reference',
             LOCATION: 'name',
-            EVENT: 'title'
+            EVENT: 'date'
         }[getPoleType(node)]
 
-        return R.assoc('label', node.properties[label], node)
+        return {...node, id: node.properties.id, label: node.properties[label]}
     }),
-    edges: R.map(edge => R.pipe(R.assoc('from', edge.start), R.assoc('to', edge.end))(edge))
+    edges: R.map(edge => {
+        const {from, to} = edge.properties
+        return {...edge, from, to, id: `${from}-${to}`}
+    })
 }
 
 const getPoleType = node => {

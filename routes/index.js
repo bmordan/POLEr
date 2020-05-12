@@ -5,9 +5,18 @@ module.exports = {
     index: (req, res) => {
         res.sendFile(publicRoot('index'))
     },
-    all: async (req, res) => {
+    nodeById: async (req, res) => {
         try {
-            const {nodes, edges} = await POLEr.all()
+            const {nodes, edges} = await POLEr.nodeById(req.params.id)
+            res.send({nodes, edges})
+        } catch(err) {
+            res.send(err)
+        }
+    },
+    locationByName: async (req, res) => {
+        try {
+            const name = decodeURIComponent(req.query.name)
+            const {nodes, edges} = await POLEr.locationByName(name)
             res.send({nodes, edges})
         } catch(err) {
             res.send(err)
@@ -23,9 +32,9 @@ module.exports = {
         }
     },
     expandNodeById: async (req, res) => {
-        console.log('server gets ', req.params.id)
         try {
-            const {nodes, edges} = await POLEr.expandNodeById(req.params.id)
+            const {id, label} = req.params
+            const {nodes, edges} = await POLEr.expandNodeById(id,label)
             res.send({nodes, edges})
         } catch(err) {
             res.send(err)

@@ -3,7 +3,7 @@
     export let version
     $: selected = null
     const onSelect = nodeInfo => {
-        selected = nodeInfo.html || null
+        selected = nodeInfo && nodeInfo.html
     }
 </script>
 <section class="row border-bottom">

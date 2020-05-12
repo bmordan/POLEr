@@ -5,13 +5,13 @@ const PERSON = ({name, role}) => `
     <p class="card-text">role: ${role}</p>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">Cras justo odio</li>
-    <li class="list-group-item">Dapibus ac facilisis in</li>
-    <li class="list-group-item">Vestibulum at eros</li>
+    <li class="list-group-item">Show urgent apprentices</li>
+    <li class="list-group-item">Show Objectives</li>
+    <li class="list-group-item">Show OJT</li>
   </ul>
   <div class="card-body">
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <a href="#" class="card-link">Apply Filters</a>
+    <a href="#" class="card-link">Remove Filters</a>
   </div>
 </div>
 `
@@ -34,7 +34,7 @@ const LOCATION = ({name, address}) => `
 </div>
 `
 
-const EVENT = ({title, date}) => `
+const EVENT = ({date, details}) => `
 <div class="card">
     <div class="card-body">
         <h5 class="card-title"><img style="height:64px;width:60px;" class="m-2" src="/icons/event-selected.svg" alt="Event Node"> ${title}</h5>
